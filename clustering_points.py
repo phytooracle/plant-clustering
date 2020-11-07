@@ -87,6 +87,7 @@ def main():
                                         'se_lon',
                                         'bounding_area_m2'])
 
+    # Doing the prediction by genotype so it doesnt get overwhelmed
     for geno in geno_list:
         sub_df = whole.set_index('genotype').loc[geno]
         
@@ -99,6 +100,7 @@ def main():
         except:
             pass
 
+    # Assigning the match names to the plants and exporting
     matched_df = matched_df.reset_index()
     matched_df['genotype'] = matched_df['index']
     del matched_df['index']
