@@ -2,7 +2,7 @@
 """
 Author : Travis Simmons
 Date   : 2020-10-30
-Purpose: Plant clustering for a full growing season
+Purpose: Plant clustering for a full growing season using agglomerative clustering
 """
 
 import argparse
@@ -66,8 +66,6 @@ def main():
 
     if 'Green_Towers_BORDER' in geno_list:
         geno_list.remove('Green_Towers_BORDER')
-
-    whole_cords = list(zip(whole['lon'], whole['lat']))
 
     # Run clustering algorithm and add matching column: plat_name 
     model = sklearn.cluster.AgglomerativeClustering(n_clusters=None, affinity='euclidean', memory=None, connectivity=None, compute_full_tree='auto', linkage='ward', distance_threshold= .0000009)
