@@ -63,11 +63,12 @@ def main():
 
     # Creates a list of all unique genotypes in day 2 that we can itterate over.
     geno_list = whole.genotype.unique().tolist()
-
+    
+    # Green towers border is our buffer group and will not be included in analysis
     if 'Green_Towers_BORDER' in geno_list:
         geno_list.remove('Green_Towers_BORDER')
 
-    # Run clustering algorithm and add matching column: plat_name 
+    # Run clustering algorithm and add matching column: plant_name 
     model = sklearn.cluster.AgglomerativeClustering(n_clusters=None, affinity='euclidean', memory=None, connectivity=None, compute_full_tree='auto', linkage='ward', distance_threshold= .0000009)
     matched_df = pd.DataFrame(columns=['date',
                                         'treatment',
@@ -85,10 +86,11 @@ def main():
                                         'se_lon',
                                         'bounding_area_m2'])
 
-    # Doing the prediction by genotype so it doesnt get overwhelmed
+    # Doing the prediction by genotype so it doesn't get overwhelmed
     for geno in geno_list:
         sub_df = whole.set_index('genotype').loc[geno]
         
+        # for each genotype it fits an agglomerative clustering model
         try:
             cords = list(zip(sub_df['lon'], sub_df['lat']))
             clustering = model.fit_predict(cords)
