@@ -90,7 +90,7 @@ def main():
     for geno in geno_list:
         sub_df = whole.set_index('genotype').loc[geno]
         
-        # for each genotype it fits an agglomerative clustering model
+        # An agglomerative clustering model is fitted for each genotype
         try:
             cords = list(zip(sub_df['lon'], sub_df['lat']))
             clustering = model.fit_predict(cords)
