@@ -14,8 +14,8 @@ The outputted csv is easy to use with pandas, but can be difficult to read, so i
 
 Positional: 'csv_list' - Directory containing CSV files to match
 
-Flags:  '-o' - Output Directory - Default is pointmatching_out.
-        '-f' - Filename of the output csv. - Default is agglomerative_plant_clustering.csv
+Flags:&nbsp; '-o' - Output Directory - Default is pointmatching_out.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'-f' - Filename of the output csv. - Default is agglomerative_plant_clustering.csv
         
 
 ## Adapting the Script
