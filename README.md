@@ -50,7 +50,7 @@ For instance if you were running an experiment with two plant types and two trea
                                         'lon',
                                         'lat'])
                                         
- And then you would change all occurences of 'genotype' to plant type. This would return a csv with headers = ['date', 'plant_type', 'treatment', 'lon', 'lat', 'plant_name'].
+ And then you would change all occurences of 'genotype' to plant_type. This would return a csv with headers = ['date', 'plant_type', 'treatment', 'lon', 'lat', 'plant_name'].
  
  Then your clusters would be named something like (plant_type_1, 23).
  
