@@ -8,7 +8,7 @@ It will return a csv with an added column 'plant_name' that is in the format (f'
 
 
 
-The outputted csv is easy to use with pandas, but can be difficult to read, so in the file containing this readme there is also a csv to json conversion script that creates a more human readable document.
+The outputted csv is easy to use with pandas, but can be difficult to read, so in the repository containing this readme there is also a csv to json conversion script that creates a more human readable document.
 
 ## Arguments and Flags
 
