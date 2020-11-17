@@ -12,11 +12,12 @@ The outputted csv is easy to use with pandas, but can be difficult to read, so i
 
 ## Arguments and Flags
 
-Positional: 'csv_list' - Directory containing CSV files to match
-
-Flags:&nbsp; '-o' - Output Directory - Default is pointmatching_out.  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'-f' - Filename of the output csv. - Default is agglomerative_plant_clustering.csv
-        
+* **Positional Arguments:** 
+    * **Directory containing CSV files to cluster:** 'csv_list'
+    
+* **Optional Arguments:**
+    * **Output directory:** '-o', '--outdir', default='pointmatching_out'
+    * **Output filename:** '-f', '--filename', default='agglomerative_plant_clustering'
 
 ## Adapting the Script
 
