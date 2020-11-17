@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Author : Travis Simmons
+Author : Travis Simmons, Emmanuel Gonzalez
 Date   : 2020-10-30
 Purpose: Plant clustering for a full growing season using agglomerative clustering
 """
