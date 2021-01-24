@@ -11,6 +11,7 @@ import sys
 import numpy as np
 import pandas as pd
 import sklearn
+import glob
 from sklearn.cluster import AgglomerativeClustering
 
 
@@ -54,11 +55,19 @@ def main():
 
     if not os.path.isdir(args.outdir):
         os.makedirs(args.outdir)
-
-    for csv in args.csv_list:
+        
+      # Working 1/24/2021
+#     for csv in args.csv_list:
+#         df = pd.read_csv(csv, engine='python')
+#         df_list.append(df)
+    
+    # Added 1/24/2021
+    identifications = glob.glob(os.path.join(args.csv_list,'*.csv'))
+    
+    for csv in identifications:
         df = pd.read_csv(csv, engine='python')
         df_list.append(df)
-
+    # ----------------------------------------------------------------
     whole = pd.concat(df_list)
 
     # Creates a list of all unique genotypes in day 2 that we can itterate over.
