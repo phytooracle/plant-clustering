@@ -23,11 +23,18 @@ def get_args():
     parser = argparse.ArgumentParser(
         description='Plant clustering',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+# Working 1/24/2021
+#     parser.add_argument('csv_list',
+#                         nargs='+',
+#                         metavar='csv_list',
+#                         help='Directory containing CSV files to match')
 
+# Added 1/24/2021
     parser.add_argument('csv_list',
-                        nargs='+',
                         metavar='csv_list',
+                        type = str,
                         help='Directory containing CSV files to match')
+
 
     parser.add_argument('-o',
                         '--outdir',
