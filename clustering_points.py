@@ -56,7 +56,7 @@ def main():
         os.makedirs(args.outdir)
 
     for csv in args.csv_list:
-        df = pd.read_csv(csv)
+        df = pd.read_csv(csv, engine='python')
         df_list.append(df)
 
     whole = pd.concat(df_list)
