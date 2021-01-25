@@ -122,7 +122,9 @@ def main():
     del matched_df['index']
   
     names = list(zip(matched_df['genotype'], matched_df['plant_name']))
-    matched_df = matched_df.assign(plant_name = names)
+    names_format = [i[0] + '_' + str(int(i[1])) for i in names]
+    
+    matched_df = matched_df.assign(plant_name = names_format)
     print(matched_df)
 
     out_path = os.path.join(args.outdir, args.filename + '.csv')
