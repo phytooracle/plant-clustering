@@ -85,7 +85,7 @@ def main():
         geno_list.remove('Green_Towers_BORDER')
 
     # Run clustering algorithm and add matching column: plant_name 
-    model = sklearn.cluster.AgglomerativeClustering(n_clusters=None, affinity='euclidean', memory=None, connectivity=None, compute_full_tree='auto', linkage='ward', distance_threshold= .0000009)
+    model = sklearn.cluster.AgglomerativeClustering(n_clusters=None, affinity='euclidean', memory=None, connectivity=None, compute_full_tree='auto', linkage='average', distance_threshold= .0000006)
     matched_df = pd.DataFrame(columns=['date',
                                         'treatment',
                                         'plot',
