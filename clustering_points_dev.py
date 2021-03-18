@@ -101,6 +101,12 @@ def main():
                                         'se_lat',
                                         'se_lon',
                                         'bounding_area_m2'])
+    # # Reverse date matching
+    # rgb_dates = matched_df.date.unique()
+    # rgb_dates.sort(reverse = True)
+
+    # for date in rgb_dates:
+        
 
     # Doing the prediction by genotype so it doesn't get overwhelmed
     for geno in geno_list:
@@ -126,9 +132,8 @@ def main():
     
     matched_df = matched_df.assign(plant_name = names_format)
 
-    out_path = os.path.join(args.outdir, args.filename + '.csv')
-    matched_df.to_csv(out_path)
 
+    # Getting rid of double identifications
     plant_names = matched_df.plant_name.unique()
 
     for i in plant_names:
@@ -163,6 +168,10 @@ def main():
                 # Drop the rest from the main df
                 matched_df.drop(labels = one_day_drop_df.index[:], axis = 0, inplace = True)
     
+
+    # Outputting finished file
+    out_path = os.path.join(args.outdir, args.filename + '.csv')
+    matched_df.to_csv(out_path)
 # --------------------------------------------------
 if __name__ == '__main__':
     main()
