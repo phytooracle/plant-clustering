@@ -3,6 +3,9 @@
 Author : Travis Simmons, Emmanuel Gonzalez
 Date   : 2020-10-30
 Purpose: Plant clustering for a full growing season using agglomerative clustering
+Sample Deployment: ./clustering_points_v2.py /home/travis_s/data/season10_plant_detection/season10_plant_detection 
+                    -r /home/travis_s/data/plant_prediction_data/intermediate/stereoTop/high_number_marked_doubles.csv 
+                    -f final_clustering_out_with_high_number_doubles
 """
 
 import argparse
@@ -13,6 +16,7 @@ import pandas as pd
 import sklearn
 import glob
 from sklearn.cluster import AgglomerativeClustering
+from sklearn.cluster import FeatureAgglomeration
 
 
 
@@ -34,6 +38,12 @@ def get_args():
                         metavar='csv_list',
                         type = str,
                         help='Directory containing CSV files to match')
+
+    parser.add_argument('-r',
+                        '--remove_points',
+                        help='A csv of points, that if they are included in a cluster, they get a 1 in the double_lettuce column',
+                        metavar='remove_points',
+                        type=str)
 
 
     parser.add_argument('-o',
@@ -70,15 +80,31 @@ def main():
     
     # Added 1/24/2021
     identifications = glob.glob(os.path.join(args.csv_list,'*.csv'))
+    print(identifications)
     
     for csv in identifications:
         df = pd.read_csv(csv, engine='python')
         df_list.append(df)
     # ----------------------------------------------------------------
     whole = pd.concat(df_list)
-
+    
     # Creates a list of all unique genotypes in day 2 that we can itterate over.
     geno_list = whole.genotype.unique().tolist()
+    geno_list = [x for x in geno_list if str(x) != 'nan']
+
+    whole['double_lettuce'] = 0
+    print(len(whole))
+    if args.remove_points:
+        double_df = pd.read_csv(args.remove_points)
+        double_df['double_lettuce'] = 1
+        whole = pd.concat([whole, double_df])
+
+    print(len(whole))
+
+ 
+    # print(geno_list)
+
+
     
     # Green towers border is our buffer group and will not be included in analysis
     #if 'Green_Towers_BORDER' in geno_list:
@@ -86,6 +112,7 @@ def main():
 
     # Run clustering algorithm and add matching column: plant_name 
     model = sklearn.cluster.AgglomerativeClustering(n_clusters=None, affinity='euclidean', memory=None, connectivity=None, compute_full_tree='auto', linkage='average', distance_threshold= .0000006)
+    # model = FeatureAgglomeration(n_clusters=None, compute_full_tree = True, distance_threshold = 0.0000012, linkage='ward')
     matched_df = pd.DataFrame(columns=['date',
                                         'treatment',
                                         'plot',
@@ -100,7 +127,8 @@ def main():
                                         'nw_lon',
                                         'se_lat',
                                         'se_lon',
-                                        'bounding_area_m2'])
+                                        'bounding_area_m2',
+                                        'plant_name'])
     # # Reverse date matching
     # rgb_dates = matched_df.date.unique()
     # rgb_dates.sort(reverse = True)
@@ -110,14 +138,17 @@ def main():
 
     # Doing the prediction by genotype so it doesn't get overwhelmed
     for geno in geno_list:
+        # print(geno)
         sub_df = whole.set_index('genotype').loc[geno]
         
-        # An agglomerative clustering model is fitted for each genotype
+        # An agglomerative clustering model is fit for each genotype
         try:
             cords = list(zip(sub_df['lon'], sub_df['lat']))
             clustering = model.fit_predict(cords)
             geno_clustered = sub_df.assign(plant_name = clustering)
             matched_df = pd.concat([matched_df,geno_clustered])
+
+            
              
         except:
             pass
@@ -131,7 +162,23 @@ def main():
     names_format = [i[0] + '_' + str(int(i[1])) for i in names]
     
     matched_df = matched_df.assign(plant_name = names_format)
+    
+    # changing the double_lettuce column for the ones that were matched with doubles
+    if args.remove_points:
+    
+        doubles_matches = matched_df[matched_df['double_lettuce'] == 1]
 
+        double_plants = doubles_matches.plant_name.unique()
+
+        matched_df = matched_df.set_index('plant_name')
+        for i in double_plants:
+            matched_df.loc[i, 'double_lettuce'] = 1
+        matched_df = matched_df.reset_index()
+
+    # Dropping the rows from the double lettuce template
+    nan_value = float("NaN")
+    matched_df.replace("", nan_value, inplace = True)
+    matched_df.dropna(subset = ['bounding_area_m2'], inplace = True)
 
     # Getting rid of double identifications
     plant_names = matched_df.plant_name.unique()
