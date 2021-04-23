@@ -1,6 +1,6 @@
-# Agglomerative Plant Clustering Script
+# Plant Feature Clustering Script
 
-This is the agglomerative clustering script used in the PhytoOracle pipline to track plants over days. 
+This is the feature clustering script used in the PhytoOracle pipline to track plants over time. 
 
 ## Inputs
 It takes in a csv with at least the columns of 'genotype', 'lat', 'lon'.
