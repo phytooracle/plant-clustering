@@ -81,8 +81,8 @@ def main():
     geno_list = whole.genotype.unique().tolist()
     
     # Green towers border is our buffer group and will not be included in analysis
-    if 'Green_Towers_BORDER' in geno_list:
-        geno_list.remove('Green_Towers_BORDER')
+    #if 'Green_Towers_BORDER' in geno_list:
+    #    geno_list.remove('Green_Towers_BORDER')
 
     # Run clustering algorithm and add matching column: plant_name 
     model = sklearn.cluster.AgglomerativeClustering(n_clusters=None, affinity='euclidean', memory=None, connectivity=None, compute_full_tree='auto', linkage='average', distance_threshold= .0000006)
@@ -101,6 +101,12 @@ def main():
                                         'se_lat',
                                         'se_lon',
                                         'bounding_area_m2'])
+    # # Reverse date matching
+    # rgb_dates = matched_df.date.unique()
+    # rgb_dates.sort(reverse = True)
+
+    # for date in rgb_dates:
+        
 
     # Doing the prediction by genotype so it doesn't get overwhelmed
     for geno in geno_list:
@@ -125,11 +131,47 @@ def main():
     names_format = [i[0] + '_' + str(int(i[1])) for i in names]
     
     matched_df = matched_df.assign(plant_name = names_format)
-    print(matched_df)
 
+
+    # Getting rid of double identifications
+    plant_names = matched_df.plant_name.unique()
+
+    for i in plant_names:
+
+        # Creating an rgb df for one plant 
+        one_plant_rgb_df1 = matched_df.loc[matched_df['plant_name'] == i, ['date', 'bounding_area_m2']]
+
+        # There is an error here where sometimes a plant was seen twice on the same day.
+        # I am implementing a decision rule that we have used before for double identifications
+        # If it was identified twice, the biggest identification is the real one. 
+        # The second identification was most likely it bleeding into another plot or a weed.\]
+        # I am only doing this for rgb because the way the clustering is done for flir we shouldn't have double identifications
+        # I may go back and change how rgb is clustered to include this condidtional
+        
+        # Checking for double dates
+        if not one_plant_rgb_df1["date"].is_unique:
+
+            # pull out the rows that have the same date
+            drop_df = one_plant_rgb_df1[one_plant_rgb_df1.duplicated('date', keep=False) == True]
+
+            # Implement decision rule described above
+            for x in drop_df.date.unique():
+                one_day_drop_df = drop_df[drop_df['date'] == x]
+
+                # drop the ones that are not the max,
+                # this makes this solution handle if the plant was seen more than twice
+                dont_drop_df = one_day_drop_df[one_day_drop_df['bounding_area_m2'] == max(one_day_drop_df['bounding_area_m2'])]
+                
+                # drop the one we want to keep
+                one_day_drop_df.drop(labels = dont_drop_df.index[0], axis = 0, inplace = True)
+
+                # Drop the rest from the main df
+                matched_df.drop(labels = one_day_drop_df.index[:], axis = 0, inplace = True)
+    
+
+    # Outputting finished file
     out_path = os.path.join(args.outdir, args.filename + '.csv')
     matched_df.to_csv(out_path)
-    
 # --------------------------------------------------
 if __name__ == '__main__':
     main()
