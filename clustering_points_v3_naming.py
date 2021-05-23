@@ -129,7 +129,7 @@ def main():
                                         'se_lon',
                                         'bounding_area_m2',
                                         'plant_name',
-                                        'double_lettuce'])
+                                        'flag'])
     # # Reverse date matching
     # rgb_dates = matched_df.date.unique()
     # rgb_dates.sort(reverse = True)
@@ -200,13 +200,13 @@ def main():
     # changing the double_lettuce column for the ones that were matched with doubles
     if args.remove_points:
     
-        doubles_matches = matched_df[matched_df['double_lettuce'] == 1]
+        doubles_matches = matched_df[matched_df['flag'] == 1]
 
         double_plants = doubles_matches.plant_name.unique()
 
         matched_df = matched_df.set_index('plant_name')
         for i in double_plants:
-            matched_df.loc[i, 'double_lettuce'] = 1
+            matched_df.loc[i, 'flag'] = 1
         matched_df = matched_df.reset_index()
 
     # Dropping the rows from the double lettuce template
