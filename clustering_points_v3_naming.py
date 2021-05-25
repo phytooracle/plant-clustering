@@ -92,10 +92,11 @@ def main():
     geno_list = whole.genotype.unique().tolist()
     geno_list = [x for x in geno_list if str(x) != 'nan']
 
-    whole['double_lettuce'] = 0
+    
     print(len(whole))
     if args.remove_points:
         double_df = pd.read_csv(args.remove_points)
+        whole['double_lettuce'] = 0
         double_df['double_lettuce'] = 1
         whole = pd.concat([whole, double_df])
 
@@ -206,7 +207,7 @@ def main():
 
         matched_df = matched_df.set_index('plant_name')
         for i in double_plants:
-            matched_df.loc[i, 'flag'] = 1
+            matched_df.loc[i, 'flag'] = '1'
         matched_df = matched_df.reset_index()
 
     # Dropping the rows from the double lettuce template
