@@ -96,8 +96,8 @@ def main():
     print(len(whole))
     if args.remove_points:
         double_df = pd.read_csv(args.remove_points)
-        whole['double_lettuce'] = 0
-        double_df['double_lettuce'] = 1
+        whole['flag'] = 0
+        double_df['flag'] = 1
         whole = pd.concat([whole, double_df])
 
     print(len(whole))
@@ -129,8 +129,7 @@ def main():
                                         'se_lat',
                                         'se_lon',
                                         'bounding_area_m2',
-                                        'plant_name',
-                                        'flag'])
+                                        'plant_name'])
     # # Reverse date matching
     # rgb_dates = matched_df.date.unique()
     # rgb_dates.sort(reverse = True)
