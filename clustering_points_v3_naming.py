@@ -116,7 +116,6 @@ def main():
     model = sklearn.cluster.AgglomerativeClustering(n_clusters=None, affinity='euclidean', memory=None, connectivity=None, compute_full_tree='auto', linkage='average', distance_threshold= .0000006)
     # model = FeatureAgglomeration(n_clusters=None, compute_full_tree = True, distance_threshold = 0.0000012, linkage='ward')
     matched_df = pd.DataFrame(columns=['date',
-                                        'treatment',
                                         'plot',
                                         'genotype',
                                         'lon',
@@ -160,15 +159,15 @@ def main():
                 
                 for index, row in single_plant_df.iterrows():
                     lat_main = row['lat']
-                    plot_main = row['plot']
+                    plot_main = int(row['plot'])
                     break
                 # lat_main = single_plant_df.loc[[geno], ['lat']]
                 lat_format = str(lat_main).replace('.', '')[:12]
 
 
                 # plot_main = single_plant_df[[geno], ['plot']]
-
-                names_format = geno + '_' + str(plot_main) + '_' + lat_format
+                geno_format = geno.replace(' ', '_')
+                names_format = geno_format + '_' + str(plot_main) + '_' + lat_format
 
                 
 
@@ -250,11 +249,13 @@ def main():
                 # Drop the rest from the main df
                 matched_df.drop(labels = one_day_drop_df.index[:], axis = 0, inplace = True)
     try: 
-        matched_df.drop( labels = ['Unnamed: 0', 'id', 'geometry','index_right', 'ID'], axis = 1, inplace = True)
-    
+        #matched_df.drop( labels = ['Unnamed: 0', 'id', 'geometry','index_right', 'ID'], axis = 1, inplace = True)
+        matched_df = matched_df[['date', 'plot', 'genotype', 'lon', 'lat', 'min_x', 'max_x', 'min_y', 'max_y', 'nw_lat', 'nw_lon', 'se_lat', 'se_lon', 'bounding_area_m2', 'plant_name']]
     except:
         print('allready clean')
 # Outputting finished file
+    matched_df['date'] = matched_df['date'].str.split('__').str[0]
+    matched_df.reset_index(inplace=True)
     out_path = os.path.join(args.outdir, args.filename + '.csv')
     matched_df.to_csv(out_path)
 # --------------------------------------------------
