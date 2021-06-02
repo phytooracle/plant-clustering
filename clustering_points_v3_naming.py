@@ -139,10 +139,15 @@ def main():
 
     # Doing the prediction by genotype so it doesn't get overwhelmed
     geno_list = geno_list[:4]
+    
+    all_the_genos = len(geno_list)
+    
+    cnt = 1
+    
     for geno in geno_list:
-        print(geno)
+        print(f'Proceesing {cnt} of {all_the_genos}')
         sub_df = whole.set_index('genotype').loc[geno]
-        
+        cnt += 1
         # An agglomerative clustering model is fit for each genotype
         try:
             cords = list(zip(sub_df['lon'], sub_df['lat']))
@@ -255,6 +260,7 @@ def main():
         print('allready clean')
 # Outputting finished file
     matched_df['date'] = matched_df['date'].str.split('__').str[0]
+    matched_df['genotype'] = matched_df['genotype'].str.replace(' ', '_')
     matched_df.reset_index(inplace=True)
     out_path = os.path.join(args.outdir, args.filename + '.csv')
     matched_df.to_csv(out_path)
