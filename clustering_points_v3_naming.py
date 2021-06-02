@@ -9,6 +9,7 @@ Sample Deployment: ./clustering_points_v2.py /home/travis_s/data/season10_plant_
 """
 
 import argparse
+import warnings
 import os
 import sys
 import numpy as np
@@ -66,7 +67,7 @@ def get_args():
 # --------------------------------------------------
 def main():
     """Cluster points"""
-
+    warnings.filterwarnings('ignore')
     args = get_args()
     df_list = []
 
@@ -138,7 +139,6 @@ def main():
         
 
     # Doing the prediction by genotype so it doesn't get overwhelmed
-    geno_list = geno_list[:4]
     
     all_the_genos = len(geno_list)
     
@@ -259,9 +259,9 @@ def main():
     except:
         print('allready clean')
 # Outputting finished file
+    matched_df.reset_index(inplace=True)
     matched_df['date'] = matched_df['date'].str.split('__').str[0]
     matched_df['genotype'] = matched_df['genotype'].str.replace(' ', '_')
-    matched_df.reset_index(inplace=True)
     out_path = os.path.join(args.outdir, args.filename + '.csv')
     matched_df.to_csv(out_path)
 # --------------------------------------------------
