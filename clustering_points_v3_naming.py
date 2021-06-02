@@ -249,9 +249,12 @@ def main():
 
                 # Drop the rest from the main df
                 matched_df.drop(labels = one_day_drop_df.index[:], axis = 0, inplace = True)
+    try: 
+        matched_df.drop( labels = ['Unnamed: 0', 'id', 'geometry','index_right', 'ID'], axis = 1, inplace = True)
     
-    matched_df.drop( labels = ['Unnamed: 0', 'id', 'geometry','index_right', 'ID'], axis = 1, inplace = True)
-    # Outputting finished file
+    except:
+        print('allready clean')
+# Outputting finished file
     out_path = os.path.join(args.outdir, args.filename + '.csv')
     matched_df.to_csv(out_path)
 # --------------------------------------------------
