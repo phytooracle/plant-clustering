@@ -84,8 +84,8 @@ def main():
     
     for csv in identifications:
         #df = pd.read_csv(csv, engine='python')
-	df = pd.read_csv(csv)
-	df_list.append(df)
+        df = pd.read_csv(csv)
+        df_list.append(df)
     # ----------------------------------------------------------------
     whole = pd.concat(df_list)
     
