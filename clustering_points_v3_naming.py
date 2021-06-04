@@ -40,6 +40,13 @@ def get_args():
                         type = str,
                         help='Directory containing CSV files to match')
 
+    parser.add_argument('-t',
+                        '--threshold',
+                        help= 'clustering threshold',
+                        metavar = 'threshold', 
+                        type= 'float',
+                        default = .0000006)
+
     parser.add_argument('-r',
                         '--remove_points',
                         help='A csv of points, that if they are included in a cluster, they get a 1 in the double_lettuce column',
@@ -114,7 +121,7 @@ def main():
     #    geno_list.remove('Green_Towers_BORDER')
 
     # Run clustering algorithm and add matching column: plant_name 
-    model = sklearn.cluster.AgglomerativeClustering(n_clusters=None, affinity='euclidean', memory=None, connectivity=None, compute_full_tree='auto', linkage='average', distance_threshold= .0000006)
+    model = sklearn.cluster.AgglomerativeClustering(n_clusters=None, affinity='euclidean', memory=None, connectivity=None, compute_full_tree='auto', linkage='average', distance_threshold= args.threshold)
     # model = FeatureAgglomeration(n_clusters=None, compute_full_tree = True, distance_threshold = 0.0000012, linkage='ward')
     matched_df = pd.DataFrame(columns=['date',
                                         'plot',
