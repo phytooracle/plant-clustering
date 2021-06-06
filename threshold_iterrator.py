@@ -86,7 +86,7 @@ def main():
         
         file_name = 'detection_out_' + str(i)
         
-        command = ['./clustering_points_v3_naming.py', args.csv_list, '-t', str(i), '-f', file_name]
+        command = ['/opt/clustering_points_v3_naming.py', args.csv_list, '-t', str(i), '-f', file_name]
 
         subprocess.call(command)
         # ./clustering_points_v3_naming.py /home/travis_s/data/season10_plant_detection/season10_plant_detection -r /home/travis_s/data/plant_prediction_data/intermediate/stereoTop/high_number_marked_doubles.csv -f naming_update_clustering_full
