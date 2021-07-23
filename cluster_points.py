@@ -20,7 +20,7 @@ from sklearn.cluster import AgglomerativeClustering
 from sklearn.cluster import FeatureAgglomeration
 from multiprocessing import Process
 
-# ./clustering_points_v3_naming.py /home/travis_s/data/season10_plant_detection/season10_plant_detection -r /home/travis_s/data/plant_prediction_data/intermediate/stereoTop/high_number_marked_doubles.csv -f naming_update_clustering_full
+# ./cluster_points.py /home/travis_s/data/season11/season11_plant_detection  -f season_11_clustering_test_thresh_{thresh_value} -t {thresh_value}
 
 # --------------------------------------------------
 def get_args():
