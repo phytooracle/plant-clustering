@@ -3,7 +3,7 @@
 Author : Travis Simmons, Emmanuel Gonzalez
 Date   : 2020-10-30
 Purpose: Plant clustering for a full growing season using agglomerative clustering
-Sample Deployment: python3 ./cluster_points.py /home/travis_s/data/season_11/season11_plant_detection -f season_11_clustering -t .000004
+Sample Deployment: python3 ./cluster_points.py /home/travis_s/data/season_12/season12_plant_detection -f season_12_clustering -t 0.0000012
 """
 
 import argparse
