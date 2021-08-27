@@ -1,6 +1,6 @@
-# Plant Agglomerative Clustering Script for Season 10
+# RGB Identification Agglomerative Clustering
 
-This is the feature clustering script used in the PhytoOracle pipline to track plants over time for season 10. 
+This repository contains the agglomerative clustering script used in the PhytoOracle pipeline to track plants over time for season 10. 
 
 ## Inputs
 It takes in a csv with at least the columns of 'genotype', 'lat', 'lon'.
