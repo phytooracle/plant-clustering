@@ -1,6 +1,6 @@
-# Plant Feature Clustering Script
+# RGB Identification Agglomerative Clustering
 
-This is the feature clustering script used in the PhytoOracle pipline to track plants over time. 
+This repository contains the agglomerative clustering script used in the PhytoOracle pipeline to track plants over time for each season, sorted and containerized by branch.
 
 ## Inputs
 It takes in a csv with at least the columns of 'genotype', 'lat', 'lon'.
