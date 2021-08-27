@@ -1,4 +1,4 @@
-# Plant Feature Clustering Script
+# Plant agglomerative clustering script for season 11.
 
 This is the feature clustering script used in the PhytoOracle pipline to track plants over time. 
 
