@@ -1,6 +1,6 @@
 # RGB Identification Agglomerative Clustering
 
-This repository contains the agglomerative clustering script used in the PhytoOracle pipline to track plants over time for season 11. 
+This repository contains the agglomerative clustering script used in the PhytoOracle pipeline to track plants over time for season 11. 
 
 ## Inputs
 It takes in a csv with at least the columns of 'genotype', 'lat', 'lon'.
