@@ -70,6 +70,13 @@ def get_args():
                         type=str,
                         default='agglomerative_plant_clustering')
 
+    parser.add_argument('-c',
+                    '--conf',
+                    help='Prediction confidence threshold',
+                    metavar='conf',
+                    type=float,
+                    default='0.98')
+
     return parser.parse_args()
 
     #-------------------------------------------------------------------------------------------------------
@@ -141,6 +148,7 @@ def main():
     for csv in identifications:
         #df = pd.read_csv(csv, engine='python')
         df = pd.read_csv(csv)
+        df = df[df['pred_conf']>args.conf]
         df_list.append(df)
     # ----------------------------------------------------------------
 
