@@ -127,8 +127,15 @@ def drop_doubles(lst, pl):
 def get_pred_conf_thresh(df):
     df['pred_conf'] = df['pred_conf'].astype(float)
     num_observations = []
-    scan_date = os.path.basename(i)[:10]
     temp_df = pd.DataFrame()
+
+    # Define steps
+    x = .1
+    y = 1
+    n = 200
+    step = (y - x) / (n - 1)
+
+    frames = [x + step * i for i in range(n)]
     for x in frames:
         filtered_df = df[df['pred_conf']>float(x)]
         num_observations.append(len(filtered_df))
@@ -138,10 +145,10 @@ def get_pred_conf_thresh(df):
 
     temp_df['num_observations'] = num_observations
     temp_df['pred_conf_thresh'] = frames[:len(num_observations)]
-    temp_df['date'] = scan_date
+
     
     final_value = temp_df.iloc[(temp_df['num_observations']-6400).abs().argsort()[:1]]['pred_conf_thresh'].values
-    # final_value = final_value.astype(int)
+
     return final_value[0]
 
     #-------------------------------------------------------------------------------------------------------
@@ -171,7 +178,7 @@ def main():
 
         # funcion goes here
         pred_conf_thresh = get_pred_conf_thresh(df)
-        df = df[df['pred_conf']>pred_conf_thresh]
+
         df_list.append(df)
     # ----------------------------------------------------------------
 
