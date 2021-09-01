@@ -123,6 +123,26 @@ def drop_doubles(lst, pl):
 
             # matched_df.drop(labels = one_day_drop_df.index[:], axis = 0, inplace = True)
 
+# added 9/1/2021
+def get_pred_conf_thresh(df):
+    df['pred_conf'] = df['pred_conf'].astype(float)
+    num_observations = []
+    scan_date = os.path.basename(i)[:10]
+    temp_df = pd.DataFrame()
+    for x in frames:
+        filtered_df = df[df['pred_conf']>float(x)]
+        num_observations.append(len(filtered_df))
+
+        if len(filtered_df)<5000:
+            break
+
+    temp_df['num_observations'] = num_observations
+    temp_df['pred_conf_thresh'] = frames[:len(num_observations)]
+    temp_df['date'] = scan_date
+    
+    final_value = temp_df.iloc[(temp_df['num_observations']-6400).abs().argsort()[:1]]['pred_conf_thresh'].values
+    # final_value = final_value.astype(int)
+    return final_value[0]
 
     #-------------------------------------------------------------------------------------------------------
 
@@ -148,7 +168,10 @@ def main():
     for csv in identifications:
         #df = pd.read_csv(csv, engine='python')
         df = pd.read_csv(csv)
-        df = df[df['pred_conf']>args.conf]
+
+        # funcion goes here
+        pred_conf_thresh = get_pred_conf_thresh(df)
+        df = df[df['pred_conf']>pred_conf_thresh]
         df_list.append(df)
     # ----------------------------------------------------------------
 
